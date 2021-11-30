@@ -1,8 +1,8 @@
 /* set theme color scheme */
 :root {
 	--accent: #09ec82;
-	--text: #fff;
-	--bg: #171722;
+	--bg: #fff;
+	--text: #171722;
 	--secondary-bg: #67afaf38;
 }
 
@@ -10,7 +10,7 @@
 * {
 	margin: unset;
 	padding: unset;
-	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	box-sizing: border-box;
 	outline: none;
 }
@@ -224,6 +224,33 @@ button:active {
 
 .app__options-modal .quick-action-button.delete-button {
 	background: rgb(255, 0, 64);
+}
+
+.app__options-modal label input {
+	width: 2rem;
+	height: 2rem;
+	text-align: center;
+	font-size: 17px;
+	background: var(--secondary-bg);
+	border: none;
+	color: var(--text);
+	margin: 0;
+}
+
+.app__options-modal .theme-button {
+	background: var(--secondary-bg);
+	border: none;
+	color: var(--text);
+}
+
+.app__options-modal .theme-button.active {
+	background: var(--accent);
+}
+
+.app__options-modal .theme-button span {
+	padding: 5px;
+	border-radius: 5px;
+	font-size: 20px;
 }
 
 /* headar first section that carries the form */
@@ -513,13 +540,13 @@ button:active {
 	display: flex;
 }
 
+
 /* Responsiveness */
 
 @media screen and (min-width: 770px) {
 	/* app form */
 	.app__form.hidden {
 		max-height: 100%;
-		overflow: visible;
 	}
 
 	/* app form toggler */
