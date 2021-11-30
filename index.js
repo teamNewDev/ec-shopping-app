@@ -99,7 +99,7 @@ const setAppState = async () => {
 		document.documentElement.style.setProperty('--bg', '#fff');
 		document.documentElement.style.setProperty('--text', '#171722');
 	}
-	
+
 }
 
 //populating data to the items div
@@ -147,6 +147,7 @@ const populateItemsDiv = async () => {
 		itemsDiv.innerHTML = `
 			<span class="nothing-yet">Nothing yet.</span>
 			<small class="nothing-yet">click the plus (+) icon above to use the form to create a list </small>
+			<small class="nothing-yet">Double Tap items To select</small>
 		`
 	}
 
@@ -339,6 +340,14 @@ window.onload = async () => {
 	
 	itemsCurrencyForm.value = await getAppStateDataByName('itemsCurrency')
 	pageLoader.classList.add('hidden')
+}
+
+window.ononline = () => {
+	document.getElementById('appStatus').classList.add('online')
+}
+
+window.onoffline = () => {
+	document.getElementById('appStatus').classList.remove('online')
 }
 
 // Adding onclick event to enable the appOptionsModalToggler button toggle modal on click
