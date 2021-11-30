@@ -1,0 +1,27 @@
+{
+  "name": "Shoppie",
+  "short_name": "Shoppie",
+  "icons": [
+    {
+      "src": "./assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "./assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#09ec82",
+  "background_color": "#171722",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

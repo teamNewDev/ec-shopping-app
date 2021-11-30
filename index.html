@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#171722">
+    <title>Shoppie</title>
+
+    <link rel="stylesheet" href="./index.css">
+    <link rel="icon" href="./assets/icon-192.png">
+    <link rel="manifest" href="./manifest.json">
+
+    <script src="./dexie.min.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js');
+        });
+      }
+    </script>
+  </head>
+
+  <body class="app__container" id="appContainer">
+    <div class="app__page-loader" id="pageLoader"></div>
+    <div class="app__overlay hidden" id="appOverlay"></div>
+
+    <div class="toast-modal" id="toastModal">
+      <p id="modalContent"></p>
+    </div>
+
+    <div class="app__main">
+      <header class="app__header uniform-align">
+        <h1 class="header-text">
+          Shoppie
+          <span class="bottom-line"></span>
+        </h1>
+
+        <div class="header-buttons">
+          <button class="item options-button" id="appOptionsModalToggler">
+            <span class="icon large">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 is-active" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+              </svg>
+
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 is-inactive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              
+            </span>
+          </button>
+        </div>
+
+        <div class="app__options-modal" id="appOptionsModal">
+          <label>
+            <button class="quick-action-button delete-button" onclick="deleteAllItems()">
+              Delete all
+              <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              </span>
+            </button>
+          </label>
+
+          <label>
+            <button class="quick-action-button" id="purchaseAllButton">
+              Purchase all
+              <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                </svg>
+              </span>
+            </button>
+          </label>
+
+        </div>  
+      </header>
+
+      <div class="app__form-toggler">
+        <span class="icon" id="itemFormToggler"> 
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 is-inactive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 is-active" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </span>
+        <hr>
+      </div>
+
+      <section class="app__header-section" id="formSection">
+        <form class="app__form hidden" id="itemForm">
+          <input type="hidden" id="itemFormMode" value="create">
+          <input type="hidden" id="currentItemEditing">
+
+          <div class="form-inputs">
+            <label>
+              Name of Item:
+              <input type="text" id="nameInput" required>
+            </label>
+    
+            <label>
+              Quantity:
+              <input type="number" id="quantityInput" value=1 min=1>
+            </label>
+    
+            <label>
+              Price:
+              <input type="number" id="priceInput" value=0>
+            </label>
+          </div>
+  
+          <button type="submit" id="addItemButton">Add item</button>
+
+        </form>
+
+        <div class="app__price-display">
+          <div class="item" id="totalPriceDiv"></div>
+          <div class="item" id="balancePriceDiv"></div>
+        </div>
+
+      </section>
+
+      <div class="app__items-list">
+        <div class="list-actions">
+          <button class="quick-action-button delete-button" onclick="deleteAllItems()">
+            Delete all
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+              </svg>
+            </span>
+          </button>
+
+          <button id="selectAllButton">
+            <div class="button-mode are-not-selected">
+              Select all
+              <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+              </span>
+            </div>
+            <div class="button-mode are-selected">
+              Unselect all
+              <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </span>
+            </div>
+          </button>
+
+          <button class="delete-button selection-action" id="deleteSelectedButton">
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+              </svg>
+            </span>
+            Delete selected
+          </button>
+
+          <button class="selection-action" id="purchaseSelectedButton">
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+              </svg>
+            </span>
+            Purchase selected
+          </button>
+
+          <button class="selection-action" id="unPurchaseSelectedButton">
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+              </svg>
+            </span>
+            Unpurchase selected
+          </button>
+
+        </div>
+
+        <div class="list-main" id="itemsDiv"></div>
+
+      </div>
+    
+    </div>
+
+    <script src="./index.js"></script>
+  </body>
+</html>

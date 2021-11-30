@@ -1,0 +1,652 @@
+/* set theme color scheme */
+:root {
+	--accent: #09ec82;
+	--text: #fff;
+	--bg: #171722;
+	--secondary-bg: #67afaf38;
+}
+
+/* overwriting browser default styles */
+* {
+	margin: unset;
+	padding: unset;
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	box-sizing: border-box;
+	outline: none;
+}
+
+/* all buttons */
+button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+button:active {
+	box-shadow: 0px 0px 0px 5px var(--secondary-bg);
+}
+
+/* svg icons */
+.icon {
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.icon.large {
+	width: 25px;
+	height: 25px;
+}
+
+/* page loader */
+.app__page-loader {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background: #171722;
+	z-index: 10;
+}
+
+/* overlay */
+.app__overlay {
+	background: #17172254;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 5;
+	backdrop-filter: blur(3px);
+	-webkit-backdrop-filter: blur(3px);
+}
+
+/* overlay and page loader hiding class */
+.app__page-loader.hidden,
+.app__overlay.hidden {
+	display: none;
+}
+
+/* toast message */
+.toast-modal {
+	width: auto;
+	height: auto;
+	top: 2em;
+	right: -100%;
+	z-index: 10;
+	position: fixed;
+	background: var(--accent);
+	padding: 0.5em;
+	border-radius: 5px;
+	transition: 0.4s;
+	color: #171722;
+}
+
+.toast-modal.active {
+	right: 2em;
+}
+
+/* app container */
+.app__container {
+	background: var(--bg);
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-rows: 100%;
+	height: 100vh;
+}
+
+/* main app interface */
+.app__main {
+	padding: 2em 3em;
+}
+
+/* app header */
+.app__header {
+	width: 100%;
+	color: var(--text);
+	margin-bottom: 2.5em;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	position: relative;
+}
+
+/* app header accent color */
+.app__header .accent {
+	color: var(--accent);
+}
+
+/* app header text */
+.app__header h1 {
+	display: flex;
+	flex-direction: column;
+}
+
+.app__header h1 .bottom-line {
+	padding: 2.5px 30px;
+	background: var(--secondary-bg);
+	width: auto;
+	margin-right: auto;
+	margin-top: 0.25em;
+	display: flex;
+	position: relative;
+	border-radius: 20px;
+}
+
+/* app header text underline */
+.app__header h1 .bottom-line::after {
+	content: "";
+	padding: 2.5px 15px;
+	background: var(--accent);
+	left: 110%;
+	top: 0;
+	position: absolute;
+	border-radius: 20px;
+}
+
+/* options toggler button */
+.app__header .header-buttons {
+	margin: auto;
+	margin-right: 0;
+	z-index: 7;
+}
+
+.app__header .item.options-button {
+	font-size: 30px;
+	background: none;
+}
+
+.options-button .icon.active .is-active,
+.options-button .icon .is-inactive {
+	display: none;
+}
+
+.options-button .icon .is-active,
+.options-button .icon.active .is-inactive {
+	display: block;
+}
+
+/* options modal */
+.app__header .app__options-modal {
+	position: absolute;
+	right: 0;
+	top: 100%;
+}
+
+.header-buttons .item {
+	border: none;
+	font-size: 20px;
+	color: var(--text);
+	padding: 3px;
+	border-radius: 5px;
+}
+
+.app__options-modal {
+	background: var(--bg);
+	border-radius: 5px;
+	border: 1px solid  transparent;
+	display: none;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 130px;
+	z-index: 8;
+	overflow: hidden;
+}
+
+.app__options-modal.active {
+	display: flex;
+	border-color: var(--secondary-bg);
+}
+
+.app__options-modal label {
+	margin: 1px 0.5em;
+	background: var(--bg);
+	padding: 0.5em;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 12px;
+}
+
+.app__options-modal label button {
+	border: none;
+	width: 2rem;
+	height: 2rem;
+	transition: 0.2s;
+	color: #fff;
+	background: rgb(0, 89, 255);
+}
+
+.app__options-modal .quick-action-button {
+	width: 100%;
+}
+
+.app__options-modal .quick-action-button.delete-button {
+	background: rgb(255, 0, 64);
+}
+
+/* headar first section that carries the form */
+.app__header-section {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+/* price labels */
+.app__price-display {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding: 0.5em;
+}
+
+.app__price-display .item {
+	padding: 0.5em;
+	margin-left: 1em;
+	background: var(--secondary-bg);
+	color: var(--text);
+	padding: 1em;
+	border-radius: 5px;
+	display: flex;
+	flex-direction: column;
+	overflow-wrap: break-word;
+}
+
+.app__price-display span.label {
+	font-size: 15px;
+}
+
+.app__price-display span.value {
+	font-size: 25px;
+}
+
+.app__price-display span.value.red {
+	color: rgb(255, 0, 64);
+}
+
+.app__price-display span.value.yellow {
+	color: rgb(255, 208, 0);
+}
+
+.app__price-display span.value.green {
+	color: rgb(8, 241, 125);
+}
+
+/* form toggler */
+.app__form-toggler {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: space-evenly;
+	padding: 0.5em;
+	margin-bottom: 1em;
+}
+
+.app__form-toggler span {
+	color: var(--text);
+	font-size: 20px;
+	margin-right: 0.5em;
+	width: 25px;
+	height: 25px;
+}
+
+#itemFormToggler.active .is-active,
+#itemFormToggler .is-inactive {
+	display: none;
+}
+
+#itemFormToggler .is-active,
+#itemFormToggler.active .is-inactive {
+	display: block;
+}
+
+.app__form-toggler hr {
+	width: 100%;
+	height: 0;
+	border: none;
+	border-bottom: 1px solid var(--secondary-bg);
+}
+
+/* app form */
+.app__form {
+	display: flex;
+	flex-direction: column;
+	max-width: 500px;
+	transition: 0.4s;
+}
+
+.app__form.hidden {
+	max-height: 0;
+	overflow: hidden;
+}
+
+.app__form .form-inputs {
+	display: flex;
+	justify-content: space-between;
+}
+
+.app__form button {
+	margin: 0.5em 0;
+	font-size: 17px;
+	padding: 0.5em;
+	background: #09ec82;
+	color: #000;
+	font-weight: 500;
+	border: none;
+	border-radius: 5px;
+	width: 7rem;
+}
+
+.app__form label {
+	display: flex;
+	flex-direction: column;
+	margin-right: 0.5em;
+	color: var(--text);
+}
+
+.app__form input {
+	display: flex;
+	flex-direction: column;
+	padding: 0.5em 0.7em;
+	font-size: 17px;
+	border-radius: 5px;
+	border: none;
+	outline-color: var(--accent);
+	margin-top: 10px;
+	background: var(--secondary-bg);
+	color: var(--text);
+}
+
+.app__form input:focus {
+	background: var(--secondary-bg);
+	border: none;
+}
+
+.app__form input#quantityInput,
+.app__form input#priceInput {
+	width: 5rem;
+}
+
+/* shoppping list */
+.app__items-list {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	width: 100%;
+	margin-top: 2em;
+}
+
+.app__items-list button {
+	margin: 0 0.5em;
+	border: none;
+	padding: 5px;
+	transition: 0.2s;
+	color: #fff;
+	background: rgb(0, 89, 255);
+}
+
+.app__items-list button span {
+	font-size: 20px;
+}
+
+.app__items-list button:hover {
+	opacity: 0.5;
+}
+
+.app__items-list button:active {
+	box-shadow: 0px 0px 0px 5px var(--secondary-bg);
+}
+
+.app__items-list .edit-button {
+	color: #fff;
+	background: rgb(20, 177, 98);
+}
+
+.app__items-list .delete-button {
+	color: #fff;
+	background: rgb(255, 0, 64);
+}
+
+.app__items-list .list-actions {
+	width: 100%;
+	min-height: 3rem;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: wrap;
+	position: relative;
+}
+
+/* list actions */
+.list-actions .selection-action {
+	filter: grayscale(100%);
+	opacity: 0.5;
+}
+
+.list-actions .selection-action.active {
+	filter: none;
+	opacity: 1;
+}
+
+.list-actions button {
+	display: flex;
+	align-items: center;
+	margin: 5px 0;
+	margin-right: 10px;
+	border-radius: 5px;
+}
+
+.list-actions #selectAllButton .button-mode {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#selectAllButton.items-are-selected .button-mode.are-selected,
+#selectAllButton .button-mode.are-not-selected {
+	display: flex;
+}
+
+#selectAllButton.items-are-selected .button-mode.are-not-selected,
+#selectAllButton .button-mode.are-selected {
+	display: none;
+}
+
+/* main list of items */
+.app__items-list .list-main {
+	width: 100%;
+	height: 3rem;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	width: 100%;
+	margin-top: 1em;
+	border-top: 1px solid var(--secondary-bg);
+}
+
+/* default text displaying when list is empty */
+.list-main .nothing-yet {
+	padding: 2em;
+	color: var(--text);
+	opacity: 0.5;
+}
+
+/* list item */
+.list-main .item {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 0.5fr 2.5fr 0.5fr;
+	border-bottom: 1px solid var(--secondary-bg);
+	padding: 1em 0;
+}
+
+.list-main .item.purchased {
+	text-decoration: line-through;
+}
+
+.list-main .item.selected {
+	background: var(--secondary-bg);
+}
+
+/* item content */
+.list-main .item-info {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	color: var(--text);
+}
+
+.list-main .item-info .name {
+	margin: 0 1em;
+	text-transform: capitalize;
+}
+
+.list-main .checkbox {
+	height: 100%;
+	width: 1.2rem;
+}
+
+.list-main .item-action {
+	display: flex;
+}
+
+/* Responsiveness */
+
+@media screen and (min-width: 770px) {
+	/* app form */
+	.app__form.hidden {
+		max-height: 100%;
+		overflow: visible;
+	}
+
+	/* app form toggler */
+	.app__form-toggler {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 770px) {
+	/* app header */
+	.app__header {
+		margin-bottom: 1em;
+		margin-top: 1em;
+	}
+
+	.app__header h1 {
+		font-size: 25px;
+	}
+
+	/* app main interface */
+	.app__main {
+		padding: 1em;
+	}
+
+	/* app header section carrying form */
+	.app__header-section {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.app__header-section > div {
+		width: 100%;
+		justify-content: flex-start;
+	}
+
+	/* price labels */
+	.app__price-display {
+		display: grid;
+		grid-template-columns: calc(50% - 0.25em) calc(50% - 0.25em);
+		grid-column-gap: 0.5em;
+		padding: 0;
+	}
+
+	.app__price-display .item {
+		margin-left: 0;
+		width: 100%;
+		padding: 0.5em;
+	}
+
+	/* app form */
+	.app__form {
+		margin-bottom: 0.5em;
+		max-width: 370px;
+		width: 100%;
+		overflow: hidden;
+		font-size: 13px;
+	}
+
+	.app__form button {
+		width: 100%;
+		font-size: 13px;
+		padding: 0.7em;
+	}
+
+	.app__form label {
+		width: calc(50% - 0.25em);
+		margin: 0.25em 0;
+	}
+
+	.app__form input#quantityInput,
+    .app__form input#priceInput {
+		width: 100%;
+	}
+
+	.app__form label:first-child {
+		width: 100%;
+	}
+
+	.app__form label:last-child {
+		margin-left: 0.5em;
+	}
+
+	.app__form .form-inputs {
+		flex-wrap: wrap;
+		justify-content: flex-start;
+	}
+
+	/* shopping list */
+	.list-actions {
+		max-width: 100vw;
+	}
+
+	.list-main .item-info {
+		flex-direction: row;
+		max-width: 60vw;
+		font-size: 12px;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	/* price display labels */
+	.app__price-display .item .label {
+		font-size: 10px;
+		opacity: 0.5;
+	}
+
+	.app__price-display .item .value {
+		font-size: 12px;
+	}
+
+	/* app form */
+	.app__form input {
+		font-size: 13px;
+		padding: 0.7em;
+	}
+
+	.list-actions button {
+		font-size: 11px;
+	}
+
+	/* shopping list */
+	.app__items-list {
+		margin-top: 0.5em;
+	}
+
+	/* toast modal */
+	.toast-modal {
+		font-size: 14px;
+	}
+}
