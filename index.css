@@ -362,7 +362,7 @@ button:active {
 
 .app__form.hidden {
 	max-height: 0;
-	overflow: hidden;
+	overflow-y: hidden;
 }
 
 .app__form .form-inputs {
