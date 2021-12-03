@@ -190,6 +190,10 @@ const toggleItemStatus = async (event, id) => {
 // Function for deleting an item based on the set "id"
 const removeItem = async id => {
 	await db.items.delete(id)
+	
+	if (isSelected(id)) {
+		toggleSelect(id)
+	}
 
 	await populateItemsDiv()
 }
