@@ -360,11 +360,6 @@ button:active {
 	transition: 0.4s;
 }
 
-.app__form.hidden {
-	max-height: 0;
-	overflow-y: hidden;
-}
-
 .app__form .form-inputs {
 	display: flex;
 	justify-content: space-between;
@@ -563,6 +558,7 @@ button:active {
 	/* app form */
 	.app__form.hidden {
 		max-height: 100%;
+		width: 100%;
 	}
 
 	/* app form toggler */
@@ -620,6 +616,11 @@ button:active {
 		overflow: hidden;
 		font-size: 13px;
 	}
+	
+	.app__form.hidden {
+		max-height: 0;
+		overflow-y: hidden;
+	}
 
 	.app__form button {
 		width: 100%;
@@ -672,7 +673,7 @@ button:active {
 	.app__price-display .item .value {
 		font-size: 12px;
 	}
-
+	
 	/* app form */
 	.app__form input {
 		font-size: 13px;
