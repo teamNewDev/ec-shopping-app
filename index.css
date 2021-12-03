@@ -558,7 +558,6 @@ button:active {
 	/* app form */
 	.app__form.hidden {
 		max-height: 100%;
-		width: 100%;
 	}
 
 	/* app form toggler */
