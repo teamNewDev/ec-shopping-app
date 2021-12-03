@@ -286,6 +286,8 @@ const toggleItemEdit = async id => {
 	if (itemForm.classList.contains('hidden')) {
 		itemFormToggler.click()
 	}
+	
+	document.getElementById('nameInput').focus()
 }
 
 // Function for untoggling edit mode for specified item based on a set "id"
