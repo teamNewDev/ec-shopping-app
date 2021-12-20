@@ -384,6 +384,10 @@ itemForm.onsubmit = async (event) => {
 	const price = document.getElementById('priceInput').value
 	const currentItemEditingId = Number(currentItemEditing.value)
 	let alertMessage = 'Created!'
+	
+	if (name.replace(/\s/g, '').length == 0) {
+		return toastMessage('Sorry fields cannot be left empty!')
+	}
 
 	if (itemFormMode.value == 'create') {
 		await db.items.add({
