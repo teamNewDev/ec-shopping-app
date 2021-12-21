@@ -29,6 +29,22 @@
       <p id="modalContent"></p>
     </div>
 
+    <div class="confirm-modal" id="confirmModal">
+      <p id="modalContent"></p>
+      <div class="modal-actions">
+        <button class="red" id="closeButton">No</button>
+        <button id="actionButton">Yes</button>
+      </div>
+    </div>
+
+    <div class="info-modal" id="infoModal" onclick="closeInfoModal()">
+      <div class="content">
+        <p> - Double click items to select them.</p>
+        <p> - Click the plus (+) icon above to use the form to create a list.</p>
+      </div>
+      <button>click to dismiss forever</button>
+    </div>
+
     <div class="app__main">
       <header class="app__header uniform-align">
         <h1 class="header-text">
