@@ -15,6 +15,9 @@ db.version(1).stores({
 const setDefaultAppState = async () => {
 	if (! await db.appState.where({'name': 'formIsHidden'}).first()) {
 		await db.appState.put({ name: 'formIsHidden', data: true })
+
+		document.getElementById('infoModal').classList.add('active')
+		appOverlay.classList.remove('hidden')
 	}
 
 	if (! await db.appState.where({'name': 'darkModeEnabled'}).first()) {
@@ -189,13 +192,15 @@ const toggleItemStatus = async (event, id) => {
 
 // Function for deleting an item based on the set "id"
 const removeItem = async id => {
-	await db.items.delete(id)
+	confirmMessage('Are you sure you want to delete this item?', async () => {
+		await db.items.delete(id)
 	
-	if (isSelected(id)) {
-		toggleSelect(id)
-	}
+		if (isSelected(id)) {
+			toggleSelect(id)
+		}
 
-	await populateItemsDiv()
+		await populateItemsDiv()
+	})
 }
 
 const removeAllItems = async () => {
@@ -205,15 +210,23 @@ const removeAllItems = async () => {
 	if (arrayOfItemIds.length < 1) {
 		return toastMessage('Sorry, There are no items to delete!', 2000)
 	}
+	confirmMessage('Are you sure you want to delete all items?', async () => {
+		const allItems = await db.items.reverse().toArray()
+		let arrayOfItemIds = allItems.map(item => item.id)
+		
+		arrayOfItemIds.forEach(async id => {
+			await db.items.delete(id)
+	
+			if (isSelected(id)) {
+				toggleSelect(id)
+			}
+			selectAllButton.classList.remove('items-are-selected')
+		})
 
-	arrayOfItemIds.forEach(id => {
-		removeItem(id)
-		toggleSelect(id)
-		selectAllButton.classList.remove('items-are-selected')
+		await populateItemsDiv()
+		toastMessage('Deleted!')
+
 	})
-
-	await populateItemsDiv()
-	toastMessage('Deleted!')
 }
 
 // Function for updating the values of an item based on the set "id"
@@ -305,8 +318,8 @@ const untoggleItemEdit = () => {
 
 // Function for creating a quick toast message
 const toastMessage = (content, timeout = 1000) => {
-	let toastModal = document.getElementById('toastModal')
-	let modalContent = document.getElementById('modalContent')
+	const toastModal = document.getElementById('toastModal')
+	const modalContent = toastModal.querySelector('#modalContent')
 
 	if (!toastIsActive) {
 		toastModal.classList.add('active')
@@ -319,6 +332,37 @@ const toastMessage = (content, timeout = 1000) => {
 
 		toastIsActive = true
 	}
+}
+
+const confirmMessage = (content, action) => {
+	const confirmModal = document.getElementById('confirmModal')
+	const modalContent = confirmModal.querySelector('#modalContent')
+	const actionButton = confirmModal.querySelector('#actionButton')
+	const closeButton = confirmModal.querySelector('#closeButton')
+
+	modalContent.innerText = content
+	closeButton.onclick = closeConfirmMessage
+	appOverlay.onclick = closeConfirmMessage
+
+	actionButton.onclick = ()=> {
+		action()
+		closeConfirmMessage()
+	}
+
+	appOverlay.classList.remove('hidden')
+	confirmModal.classList.add('active')
+}
+
+const closeConfirmMessage = () => {
+	const confirmModal = document.getElementById('confirmModal')
+
+	confirmModal.classList.remove('active')
+	appOverlay.classList.add('hidden')
+}
+
+const closeInfoModal = () => {
+	document.getElementById('infoModal').classList.remove('active')
+	appOverlay.classList.add('hidden')
 }
 
 // Function for escaping html that goes into the form input to rid the app of xss and html injsection
@@ -440,18 +484,22 @@ itemsCurrencyForm.onkeyup = async event => {
 optionsDeleteAllButton.onclick = removeAllItems
 itemActionsDeleteAllButton.onclick = removeAllItems
 
-
 // Adds functionality of dleleting all selected items once to the deleteSelectedButton
 deleteSelectedButton.onclick = async () => {
-	let arrayOfSelectedItemIds = selectedItems.map(itemKey => Number(itemKey.replace('item_', '')))
+	confirmMessage('Are you sure You want to delete all seleced items?', () => {
+		let arrayOfSelectedItemIds = selectedItems.map(itemKey => Number(itemKey.replace('item_', '')))
 
-	arrayOfSelectedItemIds.forEach(id => {
-		removeItem(id)
-		toggleSelect(id)
-		selectAllButton.classList.remove('items-are-selected')
+		arrayOfSelectedItemIds.forEach(async id => {
+			await db.items.delete(id)
+	
+			if (isSelected(id)) {
+				toggleSelect(id)
+			}
+			selectAllButton.classList.remove('items-are-selected')
+		})
+
+		toastMessage('Deleted!')
 	})
-
-	toastMessage('Deleted!')
 }
 
 // Adds functionality of purchasing all items once to the purchaseAllButton
