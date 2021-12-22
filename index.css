@@ -605,8 +605,10 @@ button:active {
 	padding: 1em 0;
 }
 
-.list-main .item.purchased {
-	text-decoration: line-through;
+.list-main .item.purchased p {
+	text-decoration: rgb(255, 0, 64) line-through;
+	color: rgb(255, 0, 64) !important;
+	opacity:0.5;
 }
 
 .list-main .item.selected {
