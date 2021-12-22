@@ -9,7 +9,7 @@ const db = new Dexie('EseShoppingApp')
 
 db.version(1).stores({
 	appState: '++id, name, data',
-	items: '++id, name, price, isPurchased'
+	items: '++id, name, price, quantity, isPurchased'
 })
 
 const setDefaultAppState = async () => {
