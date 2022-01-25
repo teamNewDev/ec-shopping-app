@@ -21,7 +21,7 @@
   ],
   "theme_color": "#09ec82",
   "background_color": "#171722",
-  "start_url": "/ec-shopping-app/",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "portrait"
 }
